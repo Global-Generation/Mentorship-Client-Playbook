@@ -31,6 +31,7 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 24px;
+    overflow-x: hidden;
   }
 
   body {
@@ -40,6 +41,7 @@
     background: var(--bg);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    overflow-x: hidden;
   }
 
   /* ===== HERO ===== */
@@ -587,10 +589,16 @@
     transform: translateX(0) !important;
   }
 
-  /* ===== RESPONSIVE ===== */
+  /* ===== RESPONSIVE: Tablet & below ===== */
   @media (max-width: 1024px) {
+    html { scroll-padding-top: 72px; }
+
     .sidebar {
       transform: translateX(-100%);
+    }
+
+    .sidebar nav a {
+      min-height: 44px;
     }
 
     .mobile-header {
@@ -603,8 +611,13 @@
     }
 
     .main {
-      margin-left: 0;
-      padding: 72px 24px 60px;
+      margin: 0 auto;
+      max-width: 720px;
+      padding: 72px 28px 60px;
+    }
+
+    .step-card {
+      scroll-margin-top: 72px;
     }
 
     .two-col {
@@ -617,10 +630,37 @@
     }
   }
 
+  /* ===== RESPONSIVE: Small tablet ===== */
+  @media (max-width: 768px) {
+    .main {
+      padding: 68px 20px 60px;
+    }
+
+    .step-card {
+      padding: 26px 24px;
+    }
+
+    .step-title {
+      font-size: 18px;
+    }
+
+    .summary-block {
+      padding: 22px 24px;
+    }
+  }
+
+  /* ===== RESPONSIVE: Mobile ===== */
   @media (max-width: 640px) {
     .step-card {
-      padding: 24px 20px;
+      padding: 22px 18px;
       border-radius: 12px;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      font-size: 16px;
+      border-radius: 10px;
     }
 
     .step-title {
@@ -633,6 +673,81 @@
 
     .hero h1 {
       letter-spacing: 4px;
+    }
+
+    .role-card {
+      padding: 14px 16px;
+    }
+
+    .warn, .tip {
+      font-size: 12px;
+      padding: 10px 12px 10px 12px;
+    }
+
+    .content > ul > li,
+    .content ol > li {
+      font-size: 13px;
+    }
+
+    .summary-block {
+      padding: 20px 20px;
+      border-radius: 12px;
+    }
+
+    .summary-block li {
+      font-size: 12px;
+    }
+  }
+
+  /* ===== RESPONSIVE: Small mobile (iPhone SE etc) ===== */
+  @media (max-width: 480px) {
+    .main {
+      padding: 64px 14px 40px;
+    }
+
+    .step-card {
+      padding: 20px 16px;
+      margin-bottom: 20px;
+    }
+
+    .step-header {
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      font-size: 15px;
+    }
+
+    .step-title {
+      font-size: 16px;
+    }
+
+    .hero {
+      min-height: 70vh;
+      padding: 40px 16px;
+    }
+
+    .hero-brand {
+      letter-spacing: 4px;
+      margin-bottom: 28px;
+    }
+
+    .mobile-header {
+      padding: 0 12px;
+    }
+
+    .sub-title {
+      font-size: 14px;
+    }
+  }
+
+  /* ===== Safe area for notched phones ===== */
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .main {
+      padding-bottom: calc(60px + env(safe-area-inset-bottom));
     }
   }
 
@@ -703,7 +818,7 @@
     <a href="#step-7" onclick="closeSidebar()"><span class="nav-num">7</span>Tilda</a>
     <a href="#step-8" onclick="closeSidebar()"><span class="nav-num">8</span>Hub</a>
     <a href="#step-9" onclick="closeSidebar()"><span class="nav-num">9</span>Роли участников</a>
-    <a href="#checklist" onclick="closeSidebar()"><span class="nav-num" style="font-size:10px;">\2713</span>Чек-лист</a>
+    <a href="#checklist" onclick="closeSidebar()"><span class="nav-num" style="font-size:10px;">&#10003;</span>Чек-лист</a>
   </nav>
 </aside>
 
