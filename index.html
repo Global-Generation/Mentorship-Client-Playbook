@@ -2,136 +2,305 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Playbook — Global Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --navy: #182849;
+    --navy-light: #1e3460;
+    --cyan: #52BEDA;
+    --cyan-light: rgba(82,190,218,0.10);
+    --cyan-glow: rgba(82,190,218,0.25);
+    --mint: #70D8C1;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e5e7eb;
+    --sidebar-w: 280px;
+    --warn-bg: #fffbeb;
+    --warn-border: #f59e0b;
+    --warn-text: #92400e;
+  }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html, body {
-    font-family: 'Mulish', sans-serif;
-    color: #182849;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+  }
+
+  body {
+    font-family: 'Mulish', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
     line-height: 1.65;
-    background: white;
+    background: var(--bg);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  @page {
-    size: A4 landscape;
-    margin: 0;
-  }
-
-  /* === COVER === */
-  .cover {
-    background: #182849;
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #182849 0%, #1a3a6a 40%, #1e4a7a 70%, #182849 100%);
+    background-size: 300% 300%;
+    animation: heroGradient 8s ease infinite;
     color: white;
-    width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 60px 80px;
-    page-break-after: always;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
   }
 
-  .cover-logo {
-    font-size: 64px;
-    letter-spacing: 16px;
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(82,190,218,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(112,216,193,0.06) 0%, transparent 40%);
+    animation: heroOrbs 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroGradient {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes heroOrbs {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, -20px); }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+
+  .hero-brand {
+    font-size: clamp(28px, 5vw, 52px);
+    letter-spacing: clamp(6px, 2vw, 16px);
     text-transform: uppercase;
     font-weight: 900;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
+    opacity: 0.95;
   }
 
-  .cover h1 {
-    font-size: 32px;
+  .hero h1 {
+    font-size: clamp(24px, 4vw, 36px);
     font-weight: 900;
-    letter-spacing: 14px;
+    letter-spacing: clamp(4px, 1.5vw, 14px);
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
-  .cover h2 {
-    font-size: 20px;
+  .hero h2 {
+    font-size: clamp(14px, 2vw, 20px);
     font-weight: 400;
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.75);
   }
 
-  .cover-line {
+  .hero-line {
     width: 50px;
     height: 2px;
-    background: rgba(255,255,255,0.4);
-    margin: 24px auto;
+    background: var(--cyan);
+    margin: 28px auto;
+    border-radius: 2px;
   }
 
-  .cover-subtitle {
+  .hero-sub {
     font-size: 13px;
     color: rgba(255,255,255,0.5);
-    max-width: 600px;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
-  /* === PAGE WRAPPER === */
-  .page {
-    padding: 50px 70px;
-    min-height: 100vh;
-    page-break-after: always;
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s;
+    text-decoration: none;
   }
 
-  .page:last-child {
-    page-break-after: auto;
+  .hero-scroll:hover { color: var(--cyan); }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 24px;
+    background: rgba(255,255,255,0.2);
+    margin: 8px auto 0;
+    animation: scrollPulse 2s ease infinite;
   }
 
-  /* === TOC === */
-  .toc h2 {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 30px;
-    color: #182849;
+  @keyframes scrollPulse {
+    0%,100% { opacity: 0.3; height: 24px; }
+    50% { opacity: 0.7; height: 32px; }
   }
 
-  .toc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 60px;
-  }
-
-  .toc-item {
+  /* ===== LAYOUT ===== */
+  .layout {
     display: flex;
-    align-items: baseline;
-    padding: 10px 0;
-    border-bottom: 1px solid #E6E6E6;
-    font-size: 15px;
+    min-height: 100vh;
   }
 
-  .toc-num {
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--navy);
+    color: white;
+    padding: 28px 0;
+    overflow-y: auto;
+    z-index: 100;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar-brand {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     font-weight: 800;
-    color: #52BEDA;
-    min-width: 36px;
+    color: rgba(255,255,255,0.4);
+    padding: 0 24px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-title {
     font-size: 16px;
+    font-weight: 800;
+    padding: 0 24px;
+    margin-bottom: 24px;
+    color: white;
   }
 
-  .toc-text {
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    font-size: 13px;
     font-weight: 600;
-    color: #182849;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
   }
 
-  /* === STEP STYLING === */
+  .sidebar nav a:hover {
+    color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .sidebar nav a.active {
+    color: white;
+    background: rgba(82,190,218,0.12);
+    border-left-color: var(--cyan);
+  }
+
+  .sidebar nav a .nav-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .sidebar nav a.active .nav-num {
+    background: var(--cyan);
+    color: var(--navy);
+  }
+
+  .sidebar nav a.done .nav-num {
+    background: var(--mint);
+    color: var(--navy);
+  }
+
+  .sidebar nav a.done .nav-num::after {
+    content: '\2713';
+    font-size: 12px;
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-w);
+    right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 99;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--mint));
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    flex: 1;
+    margin-left: var(--sidebar-w);
+    padding: 40px 48px 80px;
+    max-width: 960px;
+  }
+
+  /* ===== STEP CARD ===== */
+  .step-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
+    transition: box-shadow 0.3s, transform 0.15s;
+    scroll-margin-top: 20px;
+  }
+
+  .step-card:hover {
+    box-shadow: 0 4px 16px rgba(24,40,73,0.08), 0 1px 3px rgba(0,0,0,0.04);
+  }
+
   .step-header {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-    margin-top: 6px;
+    gap: 16px;
+    margin-bottom: 20px;
   }
 
   .step-num {
-    background: #182849;
+    background: var(--navy);
     color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,96 +312,117 @@
   .step-title {
     font-size: 20px;
     font-weight: 800;
-    color: #182849;
+    color: var(--navy);
   }
 
-  .content ul {
-    list-style: none;
-    padding: 0;
-  }
+  /* ===== CONTENT LISTS ===== */
+  .content ul { list-style: none; padding: 0; }
 
   .content > ul > li {
     position: relative;
-    padding: 4px 0 4px 22px;
+    padding: 5px 0 5px 24px;
     font-size: 14px;
-    color: #333;
+    color: #374151;
   }
 
   .content > ul > li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 13px;
-    width: 7px;
-    height: 7px;
-    background: #52BEDA;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    background: var(--cyan);
     border-radius: 50%;
   }
 
   .content ol {
-    padding-left: 22px;
+    padding-left: 24px;
     counter-reset: sc;
     list-style: none;
   }
 
   .content ol > li {
     position: relative;
-    padding: 4px 0 4px 8px;
+    padding: 5px 0 5px 8px;
     font-size: 14px;
-    color: #333;
+    color: #374151;
     counter-increment: sc;
   }
 
   .content ol > li::before {
     content: counter(sc) ".";
     position: absolute;
-    left: -22px;
-    color: #52BEDA;
+    left: -24px;
+    color: var(--cyan);
     font-weight: 800;
   }
 
   .content ul ul {
-    padding-left: 18px;
-    margin: 2px 0;
+    padding-left: 20px;
+    margin: 4px 0;
   }
 
   .content ul ul li {
-    padding: 2px 0 2px 18px;
+    padding: 3px 0 3px 20px;
     font-size: 13px;
   }
 
   .content ul ul li::before {
-    width: 5px; height: 5px; top: 12px;
-    background: #70D8C1;
+    width: 5px;
+    height: 5px;
+    top: 13px;
+    background: var(--mint);
   }
 
+  /* ===== CALLOUTS ===== */
   .warn {
-    background: #FFF8E1;
-    border-left: 3px solid #ffc107;
-    padding: 10px 14px;
-    margin: 10px 0;
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px 12px 14px;
+    margin: 12px 0;
     font-size: 13px;
-    color: #7a6100;
+    color: var(--warn-text);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
   }
 
-  .warn strong { color: #5a4800; }
+  .warn::before {
+    content: '\26A0\FE0F';
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .warn strong { color: #78350f; }
 
   .tip {
-    background: rgba(82,190,218,0.08);
-    border-left: 3px solid #52BEDA;
-    padding: 8px 14px;
-    margin: 8px 0;
+    background: var(--cyan-light);
+    border-left: 3px solid var(--cyan);
+    border-radius: 0 10px 10px 0;
+    padding: 10px 16px 10px 14px;
+    margin: 10px 0;
     font-size: 13px;
     color: #0a6b83;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip::before {
+    content: '\1F4A1';
+    flex-shrink: 0;
+    font-size: 14px;
   }
 
   .sub-title {
     font-size: 15px;
     font-weight: 700;
-    color: #182849;
-    margin: 16px 0 8px 0;
-    padding-top: 12px;
-    border-top: 1px dashed #E6E6E6;
+    color: var(--navy);
+    margin: 20px 0 10px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
   }
 
   .sub-title:first-child {
@@ -241,424 +431,598 @@
     margin-top: 0;
   }
 
-  /* Two-column layout for steps */
+  /* ===== TWO COLUMNS ===== */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0 60px;
+    gap: 0 40px;
   }
 
-  .col { }
-
-  /* === ROLES === */
+  /* ===== ROLE CARDS ===== */
   .role-card {
-    background: rgba(82,190,218,0.06);
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
+    background: var(--cyan-light);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
     border: 1px solid rgba(82,190,218,0.15);
+    transition: box-shadow 0.2s;
+  }
+
+  .role-card:hover {
+    box-shadow: 0 2px 12px var(--cyan-glow);
   }
 
   .role-name {
     font-size: 15px;
     font-weight: 800;
-    color: #182849;
-    margin-bottom: 6px;
+    color: var(--navy);
+    margin-bottom: 8px;
   }
 
   .role-card ul { list-style: none; padding: 0; }
   .role-card li {
     position: relative;
-    padding: 2px 0 2px 18px;
+    padding: 3px 0 3px 20px;
     font-size: 13px;
     color: #444;
   }
   .role-card li::before {
-    content: '—';
+    content: '\2014';
     position: absolute;
     left: 0;
-    color: #52BEDA;
+    color: var(--cyan);
     font-weight: 700;
   }
 
   .role-sub {
-    margin-top: 10px;
-    padding-top: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
     border-top: 1px dashed rgba(82,190,218,0.3);
   }
 
   .role-sub-title {
     font-weight: 700;
     font-size: 13px;
-    color: #182849;
-    margin-bottom: 4px;
+    color: var(--navy);
+    margin-bottom: 6px;
   }
 
-  /* === SUMMARY === */
+  /* ===== SUMMARY BLOCK ===== */
   .summary-block {
-    background: #182849;
+    background: var(--navy);
     color: white;
-    border-radius: 12px;
-    padding: 24px 30px;
-    margin-bottom: 20px;
+    border-radius: 14px;
+    padding: 26px 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(24,40,73,0.15);
   }
 
   .summary-block h3 {
     font-size: 18px;
-    color: #70D8C1;
+    color: var(--mint);
     font-weight: 800;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .summary-block ul { list-style: none; padding: 0; }
   .summary-block li {
-    padding: 3px 0 3px 20px;
+    padding: 4px 0 4px 22px;
     position: relative;
     font-size: 13px;
     color: rgba(255,255,255,0.85);
   }
   .summary-block li::before {
-    content: '✓';
+    content: '\2713';
     position: absolute;
     left: 0;
-    color: #70D8C1;
+    color: var(--mint);
     font-weight: 700;
   }
 
   .divider {
     border: none;
-    border-top: 1px solid #E6E6E6;
-    margin: 24px 0;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
   }
 
+  /* ===== MOBILE TOGGLE ===== */
+  .mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: var(--navy);
+    color: white;
+    z-index: 101;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .mobile-header-title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .burger {
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px;
+  }
+
+  .burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .overlay.open {
+    display: block;
+    opacity: 1;
+  }
+
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+
+    .mobile-header {
+      display: flex;
+    }
+
+    .progress-bar {
+      left: 0;
+      top: 56px;
+    }
+
+    .main {
+      margin-left: 0;
+      padding: 72px 24px 60px;
+    }
+
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .hero {
+      min-height: 80vh;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .step-card {
+      padding: 24px 20px;
+      border-radius: 12px;
+    }
+
+    .step-title {
+      font-size: 17px;
+    }
+
+    .hero-brand {
+      letter-spacing: 6px;
+    }
+
+    .hero h1 {
+      letter-spacing: 4px;
+    }
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    .sidebar, .mobile-header, .progress-bar, .overlay, .hero-scroll { display: none !important; }
+
+    .main {
+      margin-left: 0;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .hero {
+      min-height: auto;
+      padding: 60px 40px;
+      page-break-after: always;
+    }
+
+    .step-card {
+      box-shadow: none;
+      border: 1px solid #ddd;
+      page-break-inside: avoid;
+      margin-bottom: 16px;
+    }
+
+    body { background: white; }
+  }
 </style>
 </head>
 <body>
 
-<!-- PAGE 1: COVER -->
-<div class="cover">
-  <div class="cover-logo">Global Generation</div>
-  <h1>Playbook</h1>
-  <h2>Процесс работы с новым клиентом</h2>
-  <div class="cover-line"></div>
-  <div class="cover-subtitle">Пошаговая инструкция по онбордингу — от подписания договора до полной настройки всех рабочих систем</div>
-</div>
-
-<!-- PAGE 2: TOC -->
-<div class="page" style="display:flex; align-items:center;">
-  <div style="width:100%; max-width:700px; margin:0 auto;">
-    <h2 style="font-size:32px; font-weight:800; margin-bottom:36px; color:#182849;">Содержание</h2>
-    <div class="toc-item"><span class="toc-num">0</span><span class="toc-text">Договор (до оплаты)</span></div>
-    <div class="toc-item"><span class="toc-num">1</span><span class="toc-text">Оплата и фиксация в AmoCRM</span></div>
-    <div class="toc-item"><span class="toc-num">2</span><span class="toc-text">Создание чата и отправка информации</span></div>
-    <div class="toc-item"><span class="toc-num">3</span><span class="toc-text">Определение ментора</span></div>
-    <div class="toc-item"><span class="toc-num">4</span><span class="toc-text">Карта студента (Google Таблицы)</span></div>
-    <div class="toc-item"><span class="toc-num">5</span><span class="toc-text">Привязка карты студента к АКБ</span></div>
-    <div class="toc-item"><span class="toc-num">6</span><span class="toc-text">Настройка и проверка Pulse</span></div>
-    <div class="toc-item"><span class="toc-num">7</span><span class="toc-text">Tilda</span></div>
-    <div class="toc-item"><span class="toc-num">8</span><span class="toc-text">Global Generation Hub</span></div>
-    <div class="toc-item"><span class="toc-num">9</span><span class="toc-text">Роли участников группы</span></div>
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-brand">Global Generation</div>
+    <h1>Playbook</h1>
+    <h2>Процесс работы с новым клиентом</h2>
+    <div class="hero-line"></div>
+    <div class="hero-sub">Пошаговая инструкция по онбордингу — от подписания договора до полной настройки всех рабочих систем</div>
   </div>
+  <a href="#step-0" class="hero-scroll">Начать</a>
 </div>
 
-<!-- PAGE 3: Steps 0-1 -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">0</div><div class="step-title">Договор (до оплаты)</div></div>
-      <div class="content">
-        <ul>
-          <li>Менеджер продаж копирует шаблон договора из Google Диска (папка Sales)</li>
-          <li>Заполняет данные клиента по скану паспорта и прописки</li>
-        </ul>
-        <div class="warn"><strong>Все данные — как в паспорте.</strong> Если данные латиницей — пишем латиницей</div>
-        <ul>
-          <li>Если паспорт просрочен — используем загранпаспорт</li>
-          <li>Для граждан других стран — загранпаспорт, адаптируем данные под формат</li>
-          <li>Отправляем договор клиенту на ознакомление</li>
-          <li>Клиент подписывает на каждой странице, на последней — заполняет свои данные</li>
-          <li>Клиент делает скан подписанного договора и отправляет обратно</li>
-          <li>Загружаем подписанный договор в систему (Hub)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="col">
-      <div class="step-header"><div class="step-num">1</div><div class="step-title">Оплата и фиксация в AmoCRM</div></div>
-      <div class="content">
-        <ul>
-          <li>Клиент оплачивает по реквизитам и отправляет чек</li>
-          <li>В AmoCRM: открыть диалог клиента → вкладка <strong>«Счета и покупки»</strong> → <strong>«Добавить»</strong> → <strong>«Оплачен»</strong></li>
-          <li>Ввести продукт и метод оплаты (цена подтягивается автоматически) → сохранить</li>
-          <li>Перенести клиента в <strong>«Успешно реализованное»</strong> → клиент переходит в AmoCRM АКБ</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<!-- ===== MOBILE HEADER ===== -->
+<div class="mobile-header">
+  <button class="burger" onclick="toggleSidebar()" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-header-title">Playbook</div>
 </div>
 
-<!-- PAGE 4: Steps 2-3 -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">2</div><div class="step-title">Создание чата и отправка информации</div></div>
-      <div class="content">
-        <ul>
-          <li>Менеджер создаёт групповой чат в Telegram</li>
-          <li>Уточнить у клиента, кого добавить с его стороны (родители, плательщик)</li>
-          <li>Добавить в чат: клиента, участников с его стороны, Льва Авдошина (2 аккаунта: основной + доп. аккаунт ментора)</li>
-          <li>Переименовать чат: <strong>«Имя клиента | GlobalGen»</strong></li>
-          <li>Поменять обложку чата: однотонный фон + эмодзи с первой буквой имени</li>
-        </ul>
-        <div class="tip">Пример: «Анастасия | GlobalGen»</div>
-        <div class="sub-title">Отправка информации</div>
-        <ul>
-          <li>Отправить в чат: общая информация, задачи на ближайшее время</li>
-          <li>Если клиент ещё не оплатил — первая задача: оплата</li>
-        </ul>
-        <div class="warn"><strong>Без оплаты карта студента не создаётся.</strong> Сначала информация в чат, затем ментор и карта</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="step-header"><div class="step-num">3</div><div class="step-title">Определение ментора</div></div>
-      <div class="content">
-        <ul>
-          <li>Менеджер вместе с Львом определяет ментора</li>
-          <li>Критерии: специальность, предпочтения клиента, доступность</li>
-          <li>После определения — добавить ментора в чат Telegram и переименовать чат при необходимости</li>
-        </ul>
-      </div>
+<!-- ===== OVERLAY ===== -->
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-brand">Global Generation</div>
+  <div class="sidebar-title">Playbook</div>
+  <nav>
+    <a href="#step-0" onclick="closeSidebar()"><span class="nav-num">0</span>Договор</a>
+    <a href="#step-1" onclick="closeSidebar()"><span class="nav-num">1</span>Оплата и AmoCRM</a>
+    <a href="#step-2" onclick="closeSidebar()"><span class="nav-num">2</span>Чат и информация</a>
+    <a href="#step-3" onclick="closeSidebar()"><span class="nav-num">3</span>Определение ментора</a>
+    <a href="#step-4" onclick="closeSidebar()"><span class="nav-num">4</span>Карта студента</a>
+    <a href="#step-5" onclick="closeSidebar()"><span class="nav-num">5</span>Привязка к АКБ</a>
+    <a href="#step-6" onclick="closeSidebar()"><span class="nav-num">6</span>Настройка Pulse</a>
+    <a href="#step-7" onclick="closeSidebar()"><span class="nav-num">7</span>Tilda</a>
+    <a href="#step-8" onclick="closeSidebar()"><span class="nav-num">8</span>Hub</a>
+    <a href="#step-9" onclick="closeSidebar()"><span class="nav-num">9</span>Роли участников</a>
+    <a href="#checklist" onclick="closeSidebar()"><span class="nav-num" style="font-size:10px;">\2713</span>Чек-лист</a>
+  </nav>
+</aside>
+
+<!-- ===== PROGRESS BAR ===== -->
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<!-- ===== CONTENT ===== -->
+<div class="layout">
+<main class="main">
+
+  <!-- Step 0 -->
+  <div class="step-card" id="step-0">
+    <div class="step-header"><div class="step-num">0</div><div class="step-title">Договор (до оплаты)</div></div>
+    <div class="content">
+      <ul>
+        <li>Менеджер продаж копирует шаблон договора из Google Диска (папка Sales)</li>
+        <li>Заполняет данные клиента по скану паспорта и прописки</li>
+      </ul>
+      <div class="warn"><strong>Все данные — как в паспорте.</strong> Если данные латиницей — пишем латиницей</div>
+      <ul>
+        <li>Если паспорт просрочен — используем загранпаспорт</li>
+        <li>Для граждан других стран — загранпаспорт, адаптируем данные под формат</li>
+        <li>Отправляем договор клиенту на ознакомление</li>
+        <li>Клиент подписывает на каждой странице, на последней — заполняет свои данные</li>
+        <li>Клиент делает скан подписанного договора и отправляет обратно</li>
+        <li>Загружаем подписанный договор в систему (Hub)</li>
+      </ul>
     </div>
   </div>
-</div>
 
-<!-- PAGE 5: Step 4 -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">4</div><div class="step-title">Карта студента (Google Таблицы)</div></div>
-      <div class="content">
-        <div class="sub-title" style="border:none;padding:0;margin:0 0 8px 0;">Создание карты</div>
-        <ol>
-          <li>Открыть таблицу <strong>«АКБ + Dashboard Global Generation»</strong></li>
-          <li>Перейти во вкладку <strong>«Plan»</strong> (последняя вкладка)</li>
-          <li>Вписать имя клиента, выбрать тариф, выбрать ментора</li>
-          <li>Скопировать шаблон <strong>«Бланк»</strong> → Make a Copy → назвать <strong>«Имя клиента + Ментор | GlobalGen»</strong></li>
-        </ol>
-        <div class="tip">Пример: «Алёна + Алиса | GlobalGen»</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="content">
-        <ol start="5">
-          <li>В копии открыть вкладку <strong>«Дата»</strong> (последняя) → пролистать до строки 82 (модули: 6 + 2 addon)</li>
-          <li>В таблице АКБ + Dashboard, вкладка «Plan»: выделить ячейки <strong>AM2–AT2</strong> (границы имён менторов), протянуть вниз до конца таблицы (строчка 122)</li>
-          <li><strong>Ctrl+C</strong> → вставить в ячейку <strong>A82</strong> карты студента → <strong>Специальная вставка → Только значения</strong></li>
-          <li>Разрешить доступ к внешним данным (Allow Access)</li>
-          <li>Проверить дашборд — ментор должен отображаться</li>
-        </ol>
-
-        <div class="sub-title">Homework</div>
-        <ul>
-          <li>В карте студента перейти во вкладку <strong>Homework</strong></li>
-          <li>В ячейке <strong>«Дата занятия»</strong> написать формулу <strong>=TODAY()</strong></li>
-          <li><strong>Ctrl+C</strong> → вставка только значений</li>
-          <li>Если дата первого занятия определена — поменять на нужную. Если нет — оставить как есть и проставить позже</li>
-        </ul>
-
-        <div class="sub-title">Отправка карты в чат</div>
-        <ul>
-          <li>Отправить в чат клиента ссылку на карту студента</li>
-        </ul>
-        <div class="warn"><strong>Закрепить карту студента в чате</strong> — обязательный шаг</div>
-      </div>
+  <!-- Step 1 -->
+  <div class="step-card" id="step-1">
+    <div class="step-header"><div class="step-num">1</div><div class="step-title">Оплата и фиксация в AmoCRM</div></div>
+    <div class="content">
+      <ul>
+        <li>Клиент оплачивает по реквизитам и отправляет чек</li>
+        <li>В AmoCRM: открыть диалог клиента → вкладка <strong>«Счета и покупки»</strong> → <strong>«Добавить»</strong> → <strong>«Оплачен»</strong></li>
+        <li>Ввести продукт и метод оплаты (цена подтягивается автоматически) → сохранить</li>
+        <li>Перенести клиента в <strong>«Успешно реализованное»</strong> → клиент переходит в AmoCRM АКБ</li>
+      </ul>
     </div>
   </div>
-</div>
 
-<!-- PAGE 6: Steps 5-6 -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">5</div><div class="step-title">Привязка карты студента к АКБ</div></div>
-      <div class="content">
-        <ol>
-          <li>Открыть таблицу <strong>АКБ</strong> → вкладка <strong>«Дата»</strong></li>
-          <li>Найти первую пустую строку после последнего клиента</li>
-          <li>Пролистать вверх по столбцу <strong>A</strong>, пока не появится имя последнего клиента — так проще ориентироваться</li>
-          <li>Напротив имени этого клиента в столбце <strong>B</strong> скопировать формулу <strong>IMPORT RANGE</strong></li>
-          <li>Вернуться в первую пустую строку после последнего клиента</li>
-          <li>Вставить формулу в столбец <strong>B</strong>, но внутри заменить ссылку на карту старого студента на ссылку нового (предварительно дать доступ «Редактор» всем)</li>
-          <li>В столбце <strong>A</strong> написать имя нового клиента</li>
-          <li>Дождаться загрузки, проверить дашборд — клиент в <strong>«В работе»</strong></li>
-          <li>Пролистать вправо до зелёной таблички <strong>«Последние миты»</strong></li>
-          <li>Скопировать последнюю запись, вставить: имя, дата оплаты, ссылка на карту</li>
-          <li>Проверить: в «В работе» — занятия, дата оплаты, ментор</li>
-          <li>Убрать временные данные из вкладки «Plan»</li>
-        </ol>
-      </div>
-    </div>
-    <div class="col">
-      <div class="step-header"><div class="step-num">6</div><div class="step-title">Настройка и проверка Pulse</div></div>
-      <div class="content">
-        <div class="sub-title" style="border:none;padding:0;margin:0 0 8px 0;">Настройка бота</div>
-        <ol>
-          <li>Открыть бот <strong>«Pulse By Global Generation»</strong></li>
-          <li><strong>«Добавить группу или канал»</strong> → выбрать новый чат</li>
-          <li><strong>/start</strong> → выбрать: клиент → менторы → отдел заботы</li>
-          <li>Часовой пояс: <strong>Нью-Йорк</strong></li>
-          <li>Регламент ответа: <strong>1440 минут</strong></li>
-          <li>Доп. информация: <strong>---</strong></li>
-          <li>Сохранить в таблицу</li>
-        </ol>
-        <div class="warn"><strong>После добавления Pulse написать что-нибудь в чат,</strong> чтобы бот начал отслеживать</div>
-
-        <div class="sub-title">Таблица SLA</div>
-        <ul>
-          <li>Вставить название чата из Telegram (как есть)</li>
-          <li>Столбец <strong>I</strong>: статус = <strong>«Активный»</strong></li>
-          <li>Столбец <strong>J</strong>: тариф = выбрать нужный</li>
-        </ul>
-        <div class="tip">Пример тарифа: «Частичное»</div>
-
-        <div class="sub-title">Проверка</div>
-        <ul>
-          <li>В таблице столбец <strong>A</strong> — новый клиент, всё зелёное</li>
-          <li><strong>Looker</strong> → <strong>«Last 14 days»</strong> → чат и сообщение видны</li>
-          <li>Вкладка менторства: ментор, сообщение, чат отображаются</li>
-        </ul>
-      </div>
+  <!-- Step 2 -->
+  <div class="step-card" id="step-2">
+    <div class="step-header"><div class="step-num">2</div><div class="step-title">Создание чата и отправка информации</div></div>
+    <div class="content">
+      <ul>
+        <li>Менеджер создаёт групповой чат в Telegram</li>
+        <li>Уточнить у клиента, кого добавить с его стороны (родители, плательщик)</li>
+        <li>Добавить в чат: клиента, участников с его стороны, Льва Авдошина (2 аккаунта: основной + доп. аккаунт ментора)</li>
+        <li>Переименовать чат: <strong>«Имя клиента | GlobalGen»</strong></li>
+        <li>Поменять обложку чата: однотонный фон + эмодзи с первой буквой имени</li>
+      </ul>
+      <div class="tip">Пример: «Анастасия | GlobalGen»</div>
+      <div class="sub-title">Отправка информации</div>
+      <ul>
+        <li>Отправить в чат: общая информация, задачи на ближайшее время</li>
+        <li>Если клиент ещё не оплатил — первая задача: оплата</li>
+      </ul>
+      <div class="warn"><strong>Без оплаты карта студента не создаётся.</strong> Сначала информация в чат, затем ментор и карта</div>
     </div>
   </div>
-</div>
 
-<!-- PAGE 7: Steps 7-8 -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">7</div><div class="step-title">Tilda</div></div>
-      <div class="content">
-        <ol>
-          <li>Открыть <strong>Tilda</strong> → зайти в аккаунт → аккаунт Льва</li>
-          <li><strong>«Мой проект Global Generation»</strong> → ЛК</li>
-          <li><strong>«Добавить пользователя»</strong>: имя, email, телефон</li>
-          <li>Выбрать доступ: <strong>Бакалавриат</strong> или <strong>Магистратура</strong></li>
-          <li>Написать клиенту: <strong>«Доступ к порталу выдан»</strong></li>
-        </ol>
-      </div>
-
-      <hr class="divider">
-
-      <div class="step-header"><div class="step-num">8</div><div class="step-title">Global Generation Hub</div></div>
-      <div class="content">
-        <ol>
-          <li>Войти в <strong>Hub</strong> → АКБ → <strong>«Новый клиент»</strong></li>
-          <li>Заполнить: имя, возраст, страна (обычно США), год поступления (2026), ментор</li>
-          <li>Ответственный: менеджер продаж</li>
-          <li>Username: скопировать из чата с клиентом</li>
-          <li>Ссылка на рабочий чат: Telegram → Изменить чат → Пригласительные ссылки → Скопировать</li>
-        </ol>
-      </div>
-    </div>
-    <div class="col">
-      <div class="content">
-        <ol start="6">
-          <li>Статус оплаты: <strong>«Оплатил»</strong>, способ оплаты (обычно сервис быстрых переводов)</li>
-          <li>Выбрать тариф, загрузить подписанный договор (если большой — сжать)</li>
-          <li>Скачать и загрузить чек</li>
-          <li>Добавить платёж: сумма, месяц, дата платежа, чек обязательно</li>
-        </ol>
-        <div class="tip">Пример: сумма 100, месяц — март</div>
-        <div class="warn"><strong>Фиксируем оплату в день оплаты.</strong> Если клиент оплатил 25 марта — это март, не апрель</div>
-        <ol start="10">
-          <li>Создать задачу на <strong>10 дней после оплаты</strong>: «Узнать про продление»</li>
-        </ol>
-      </div>
+  <!-- Step 3 -->
+  <div class="step-card" id="step-3">
+    <div class="step-header"><div class="step-num">3</div><div class="step-title">Определение ментора</div></div>
+    <div class="content">
+      <ul>
+        <li>Менеджер вместе с Львом определяет ментора</li>
+        <li>Критерии: специальность, предпочтения клиента, доступность</li>
+        <li>После определения — добавить ментора в чат Telegram и переименовать чат при необходимости</li>
+      </ul>
     </div>
   </div>
-</div>
 
-<!-- PAGE 8: Roles -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="step-header"><div class="step-num">9</div><div class="step-title">Роли участников группы</div></div>
+  <!-- Step 4 -->
+  <div class="step-card" id="step-4">
+    <div class="step-header"><div class="step-num">4</div><div class="step-title">Карта студента (Google Таблицы)</div></div>
+    <div class="content">
+      <div class="sub-title" style="border:none;padding:0;margin:0 0 10px;">Создание карты</div>
+      <ol>
+        <li>Открыть таблицу <strong>«АКБ + Dashboard Global Generation»</strong></li>
+        <li>Перейти во вкладку <strong>«Plan»</strong> (последняя вкладка)</li>
+        <li>Вписать имя клиента, выбрать тариф, выбрать ментора</li>
+        <li>Скопировать шаблон <strong>«Бланк»</strong> → Make a Copy → назвать <strong>«Имя клиента + Ментор | GlobalGen»</strong></li>
+      </ol>
+      <div class="tip">Пример: «Алёна + Алиса | GlobalGen»</div>
 
-      <div class="role-card">
-        <div class="role-name">Лев Авдошин</div>
-        <ul>
-          <li>Присутствует на первой встрече (любой тариф)</li>
-          <li>После первой встречи: выходит из чата с основного аккаунта, остаётся в доп. аккаунте</li>
-          <li><strong>Премиум-менторство:</strong> участвует в 2–3 встречах, остаётся основной аккаунт</li>
-        </ul>
-      </div>
+      <div class="sub-title">Настройка карты</div>
+      <ol start="5">
+        <li>В копии открыть вкладку <strong>«Дата»</strong> (последняя) → пролистать до строки 82 (модули: 6 + 2 addon)</li>
+        <li>В таблице АКБ + Dashboard, вкладка «Plan»: выделить ячейки <strong>AM2–AT2</strong> (границы имён менторов), протянуть вниз до конца таблицы (строчка 122)</li>
+        <li><strong>Ctrl+C</strong> → вставить в ячейку <strong>A82</strong> карты студента → <strong>Специальная вставка → Только значения</strong></li>
+        <li>Разрешить доступ к внешним данным (Allow Access)</li>
+        <li>Проверить дашборд — ментор должен отображаться</li>
+      </ol>
 
-      <div class="role-card">
-        <div class="role-name">Ментор</div>
-        <ul>
-          <li>Отвечает на сообщения клиента вовремя</li>
-          <li>Проводит встречи</li>
-          <li>Проверяет домашние задания</li>
-          <li><strong>Важно:</strong> ментор должен писать каждый день</li>
-          <li>Нет коммуникации больше недели → написать ментору (проверить через Pulse)</li>
-        </ul>
-      </div>
+      <div class="sub-title">Homework</div>
+      <ul>
+        <li>В карте студента перейти во вкладку <strong>Homework</strong></li>
+        <li>В ячейке <strong>«Дата занятия»</strong> написать формулу <strong>=TODAY()</strong></li>
+        <li><strong>Ctrl+C</strong> → вставка только значений</li>
+        <li>Если дата первого занятия определена — поменять на нужную. Если нет — оставить как есть и проставить позже</li>
+      </ul>
+
+      <div class="sub-title">Отправка карты в чат</div>
+      <ul>
+        <li>Отправить в чат клиента ссылку на карту студента</li>
+      </ul>
+      <div class="warn"><strong>Закрепить карту студента в чате</strong> — обязательный шаг</div>
     </div>
-    <div class="col">
-      <div class="role-card">
-        <div class="role-name">Менеджер по продажам</div>
-        <ul>
-          <li>Создаёт чат, вносит клиента во все системы</li>
-          <li>Контролирует процесс работы</li>
-          <li>Занимается продлением тарифов</li>
-          <li>Заполняет и обновляет Global Generation Hub</li>
-        </ul>
-        <div class="role-sub">
-          <div class="role-sub-title">График напоминаний о продлении:</div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step-card" id="step-5">
+    <div class="step-header"><div class="step-num">5</div><div class="step-title">Привязка карты студента к АКБ</div></div>
+    <div class="content">
+      <ol>
+        <li>Открыть таблицу <strong>АКБ</strong> → вкладка <strong>«Дата»</strong></li>
+        <li>Найти первую пустую строку после последнего клиента</li>
+        <li>Пролистать вверх по столбцу <strong>A</strong>, пока не появится имя последнего клиента — так проще ориентироваться</li>
+        <li>Напротив имени этого клиента в столбце <strong>B</strong> скопировать формулу <strong>IMPORT RANGE</strong></li>
+        <li>Вернуться в первую пустую строку после последнего клиента</li>
+        <li>Вставить формулу в столбец <strong>B</strong>, но внутри заменить ссылку на карту старого студента на ссылку нового (предварительно дать доступ «Редактор» всем)</li>
+        <li>В столбце <strong>A</strong> написать имя нового клиента</li>
+        <li>Дождаться загрузки, проверить дашборд — клиент в <strong>«В работе»</strong></li>
+        <li>Пролистать вправо до зелёной таблички <strong>«Последние миты»</strong></li>
+        <li>Скопировать последнюю запись, вставить: имя, дата оплаты, ссылка на карту</li>
+        <li>Проверить: в «В работе» — занятия, дата оплаты, ментор</li>
+        <li>Убрать временные данные из вкладки «Plan»</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="step-card" id="step-6">
+    <div class="step-header"><div class="step-num">6</div><div class="step-title">Настройка и проверка Pulse</div></div>
+    <div class="content">
+      <div class="sub-title" style="border:none;padding:0;margin:0 0 10px;">Настройка бота</div>
+      <ol>
+        <li>Открыть бот <strong>«Pulse By Global Generation»</strong></li>
+        <li><strong>«Добавить группу или канал»</strong> → выбрать новый чат</li>
+        <li><strong>/start</strong> → выбрать: клиент → менторы → отдел заботы</li>
+        <li>Часовой пояс: <strong>Нью-Йорк</strong></li>
+        <li>Регламент ответа: <strong>1440 минут</strong></li>
+        <li>Доп. информация: <strong>---</strong></li>
+        <li>Сохранить в таблицу</li>
+      </ol>
+      <div class="warn"><strong>После добавления Pulse написать что-нибудь в чат,</strong> чтобы бот начал отслеживать</div>
+
+      <div class="sub-title">Таблица SLA</div>
+      <ul>
+        <li>Вставить название чата из Telegram (как есть)</li>
+        <li>Столбец <strong>I</strong>: статус = <strong>«Активный»</strong></li>
+        <li>Столбец <strong>J</strong>: тариф = выбрать нужный</li>
+      </ul>
+      <div class="tip">Пример тарифа: «Частичное»</div>
+
+      <div class="sub-title">Проверка</div>
+      <ul>
+        <li>В таблице столбец <strong>A</strong> — новый клиент, всё зелёное</li>
+        <li><strong>Looker</strong> → <strong>«Last 14 days»</strong> → чат и сообщение видны</li>
+        <li>Вкладка менторства: ментор, сообщение, чат отображаются</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="step-card" id="step-7">
+    <div class="step-header"><div class="step-num">7</div><div class="step-title">Tilda</div></div>
+    <div class="content">
+      <ol>
+        <li>Открыть <strong>Tilda</strong> → зайти в аккаунт → аккаунт Льва</li>
+        <li><strong>«Мой проект Global Generation»</strong> → ЛК</li>
+        <li><strong>«Добавить пользователя»</strong>: имя, email, телефон</li>
+        <li>Выбрать доступ: <strong>Бакалавриат</strong> или <strong>Магистратура</strong></li>
+        <li>Написать клиенту: <strong>«Доступ к порталу выдан»</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="step-card" id="step-8">
+    <div class="step-header"><div class="step-num">8</div><div class="step-title">Global Generation Hub</div></div>
+    <div class="content">
+      <ol>
+        <li>Войти в <strong>Hub</strong> → АКБ → <strong>«Новый клиент»</strong></li>
+        <li>Заполнить: имя, возраст, страна (обычно США), год поступления (2026), ментор</li>
+        <li>Ответственный: менеджер продаж</li>
+        <li>Username: скопировать из чата с клиентом</li>
+        <li>Ссылка на рабочий чат: Telegram → Изменить чат → Пригласительные ссылки → Скопировать</li>
+        <li>Статус оплаты: <strong>«Оплатил»</strong>, способ оплаты (обычно сервис быстрых переводов)</li>
+        <li>Выбрать тариф, загрузить подписанный договор (если большой — сжать)</li>
+        <li>Скачать и загрузить чек</li>
+        <li>Добавить платёж: сумма, месяц, дата платежа, чек обязательно</li>
+      </ol>
+      <div class="tip">Пример: сумма 100, месяц — март</div>
+      <div class="warn"><strong>Фиксируем оплату в день оплаты.</strong> Если клиент оплатил 25 марта — это март, не апрель</div>
+      <ol start="10">
+        <li>Создать задачу на <strong>10 дней после оплаты</strong>: «Узнать про продление»</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 9: Roles -->
+  <div class="step-card" id="step-9">
+    <div class="step-header"><div class="step-num">9</div><div class="step-title">Роли участников группы</div></div>
+    <div class="two-col">
+      <div>
+        <div class="role-card">
+          <div class="role-name">Лев Авдошин</div>
           <ul>
-            <li>День оплаты</li>
-            <li>10 дней после оплаты</li>
-            <li>10 дней перед следующей оплатой</li>
-            <li>День следующей оплаты</li>
-            <li>При игноре — скрипты (Miro)</li>
-            <li>Игнор больше недели → пишем ментору / в общий чат</li>
+            <li>Присутствует на первой встрече (любой тариф)</li>
+            <li>После первой встречи: выходит из чата с основного аккаунта, остаётся в доп. аккаунте</li>
+            <li><strong>Премиум-менторство:</strong> участвует в 2–3 встречах, остаётся основной аккаунт</li>
+          </ul>
+        </div>
+
+        <div class="role-card">
+          <div class="role-name">Ментор</div>
+          <ul>
+            <li>Отвечает на сообщения клиента вовремя</li>
+            <li>Проводит встречи</li>
+            <li>Проверяет домашние задания</li>
+            <li><strong>Важно:</strong> ментор должен писать каждый день</li>
+            <li>Нет коммуникации больше недели → написать ментору (проверить через Pulse)</li>
           </ul>
         </div>
       </div>
+      <div>
+        <div class="role-card">
+          <div class="role-name">Менеджер по продажам</div>
+          <ul>
+            <li>Создаёт чат, вносит клиента во все системы</li>
+            <li>Контролирует процесс работы</li>
+            <li>Занимается продлением тарифов</li>
+            <li>Заполняет и обновляет Global Generation Hub</li>
+          </ul>
+          <div class="role-sub">
+            <div class="role-sub-title">График напоминаний о продлении:</div>
+            <ul>
+              <li>День оплаты</li>
+              <li>10 дней после оплаты</li>
+              <li>10 дней перед следующей оплатой</li>
+              <li>День следующей оплаты</li>
+              <li>При игноре — скрипты (Miro)</li>
+              <li>Игнор больше недели → пишем ментору / в общий чат</li>
+            </ul>
+          </div>
+        </div>
 
-      <div class="summary-block" style="margin-top: 20px;">
-        <h3>Что указать по каждому клиенту</h3>
-        <ul>
-          <li>На какой период пришёл клиент (тариф, срок)</li>
-          <li>Месяцы работы (обновлять ежемесячно в карточке)</li>
-        </ul>
+        <div class="summary-block">
+          <h3>Что указать по каждому клиенту</h3>
+          <ul>
+            <li>На какой период пришёл клиент (тариф, срок)</li>
+            <li>Месяцы работы (обновлять ежемесячно в карточке)</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- PAGE 9: Checklist -->
-<div class="page">
-  <div class="two-col">
-    <div class="col">
-      <div class="summary-block">
-        <h3>Итоговый чек-лист</h3>
-        <ul>
-          <li>Договор подписан и загружен в Hub</li>
-          <li>Оплата зафиксирована в AmoCRM</li>
-          <li>Чат в Telegram создан, информация отправлена</li>
-          <li>Ментор определён и добавлен в чат</li>
-          <li>Карта студента создана, Homework настроен, карта закреплена в чате</li>
-          <li>Карта привязана к АКБ, клиент в «В работе»</li>
-          <li>Pulse настроен, таблица SLA заполнена, проверка пройдена</li>
-          <li>Клиент в Tilda добавлен и доступ к порталу выдан</li>
-          <li>Hub полностью заполнен (данные, договор, чек, платёж, задача)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="col">
+  <!-- Checklist -->
+  <div class="step-card" id="checklist">
+    <div class="summary-block" style="margin:0;">
+      <h3>Итоговый чек-лист</h3>
+      <ul>
+        <li>Договор подписан и загружен в Hub</li>
+        <li>Оплата зафиксирована в AmoCRM</li>
+        <li>Чат в Telegram создан, информация отправлена</li>
+        <li>Ментор определён и добавлен в чат</li>
+        <li>Карта студента создана, Homework настроен, карта закреплена в чате</li>
+        <li>Карта привязана к АКБ, клиент в «В работе»</li>
+        <li>Pulse настроен, таблица SLA заполнена, проверка пройдена</li>
+        <li>Клиент в Tilda добавлен и доступ к порталу выдан</li>
+        <li>Hub полностью заполнен (данные, договор, чек, платёж, задача)</li>
+      </ul>
     </div>
   </div>
+
+</main>
 </div>
+
+<script>
+// Sidebar toggle
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.querySelector('.overlay').classList.remove('open');
+}
+
+// Active TOC + progress
+const sections = document.querySelectorAll('.step-card');
+const navLinks = document.querySelectorAll('.sidebar nav a');
+const progressFill = document.getElementById('progress');
+
+function updateNav() {
+  const scrollY = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? Math.min((scrollY / docHeight) * 100, 100) : 0;
+  progressFill.style.width = pct + '%';
+
+  let current = '';
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top <= 120) current = s.id;
+  });
+
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+</script>
 
 </body>
 </html>
