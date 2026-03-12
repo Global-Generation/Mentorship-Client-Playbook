@@ -159,6 +159,7 @@
   .layout {
     display: flex;
     min-height: 100vh;
+    background: var(--bg);
   }
 
   /* ===== SIDEBAR ===== */
@@ -271,7 +272,12 @@
     flex: 1;
     margin-left: var(--sidebar-w);
     padding: 40px 48px 80px;
-    max-width: 960px;
+    max-width: calc(100% - var(--sidebar-w));
+    width: calc(100% - var(--sidebar-w));
+  }
+
+  .main > .step-card {
+    max-width: 820px;
   }
 
   /* ===== STEP CARD ===== */
