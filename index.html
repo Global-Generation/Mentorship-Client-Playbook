@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Playbook — Global Generation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    font-family: 'Mulish', sans-serif;
+    color: #182849;
+    line-height: 1.65;
+    background: white;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  /* === COVER === */
+  .cover {
+    background: #182849;
+    color: white;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 80px;
+    page-break-after: always;
+  }
+
+  .cover-logo {
+    font-size: 64px;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 50px;
+  }
+
+  .cover h1 {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .cover h2 {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .cover-line {
+    width: 50px;
+    height: 2px;
+    background: rgba(255,255,255,0.4);
+    margin: 24px auto;
+  }
+
+  .cover-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    max-width: 600px;
+  }
+
+  /* === PAGE WRAPPER === */
+  .page {
+    padding: 50px 70px;
+    min-height: 100vh;
+    page-break-after: always;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* === TOC === */
+  .toc h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #182849;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 60px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid #E6E6E6;
+    font-size: 15px;
+  }
+
+  .toc-num {
+    font-weight: 800;
+    color: #52BEDA;
+    min-width: 36px;
+    font-size: 16px;
+  }
+
+  .toc-text {
+    font-weight: 600;
+    color: #182849;
+  }
+
+  /* === STEP STYLING === */
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    margin-top: 6px;
+  }
+
+  .step-num {
+    background: #182849;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #182849;
+  }
+
+  .content ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content > ul > li {
+    position: relative;
+    padding: 4px 0 4px 22px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .content > ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 7px;
+    height: 7px;
+    background: #52BEDA;
+    border-radius: 50%;
+  }
+
+  .content ol {
+    padding-left: 22px;
+    counter-reset: sc;
+    list-style: none;
+  }
+
+  .content ol > li {
+    position: relative;
+    padding: 4px 0 4px 8px;
+    font-size: 14px;
+    color: #333;
+    counter-increment: sc;
+  }
+
+  .content ol > li::before {
+    content: counter(sc) ".";
+    position: absolute;
+    left: -22px;
+    color: #52BEDA;
+    font-weight: 800;
+  }
+
+  .content ul ul {
+    padding-left: 18px;
+    margin: 2px 0;
+  }
+
+  .content ul ul li {
+    padding: 2px 0 2px 18px;
+    font-size: 13px;
+  }
+
+  .content ul ul li::before {
+    width: 5px; height: 5px; top: 12px;
+    background: #70D8C1;
+  }
+
+  .warn {
+    background: #FFF8E1;
+    border-left: 3px solid #ffc107;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #7a6100;
+  }
+
+  .warn strong { color: #5a4800; }
+
+  .tip {
+    background: rgba(82,190,218,0.08);
+    border-left: 3px solid #52BEDA;
+    padding: 8px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #0a6b83;
+  }
+
+  .sub-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #182849;
+    margin: 16px 0 8px 0;
+    padding-top: 12px;
+    border-top: 1px dashed #E6E6E6;
+  }
+
+  .sub-title:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  /* Two-column layout for steps */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 60px;
+  }
+
+  .col { }
+
+  /* === ROLES === */
+  .role-card {
+    background: rgba(82,190,218,0.06);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(82,190,218,0.15);
+  }
+
+  .role-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #182849;
+    margin-bottom: 6px;
+  }
+
+  .role-card ul { list-style: none; padding: 0; }
+  .role-card li {
+    position: relative;
+    padding: 2px 0 2px 18px;
+    font-size: 13px;
+    color: #444;
+  }
+  .role-card li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #52BEDA;
+    font-weight: 700;
+  }
+
+  .role-sub {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(82,190,218,0.3);
+  }
+
+  .role-sub-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #182849;
+    margin-bottom: 4px;
+  }
+
+  /* === SUMMARY === */
+  .summary-block {
+    background: #182849;
+    color: white;
+    border-radius: 12px;
+    padding: 24px 30px;
+    margin-bottom: 20px;
+  }
+
+  .summary-block h3 {
+    font-size: 18px;
+    color: #70D8C1;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .summary-block ul { list-style: none; padding: 0; }
+  .summary-block li {
+    padding: 3px 0 3px 20px;
+    position: relative;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+  .summary-block li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #70D8C1;
+    font-weight: 700;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #E6E6E6;
+    margin: 24px 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="cover">
+  <div class="cover-logo">Global Generation</div>
+  <h1>Playbook</h1>
+  <h2>Процесс работы с новым клиентом</h2>
+  <div class="cover-line"></div>
+  <div class="cover-subtitle">Пошаговая инструкция по онбордингу — от подписания договора до полной настройки всех рабочих систем</div>
+</div>
+
+<!-- PAGE 2: TOC -->
+<div class="page" style="display:flex; align-items:center;">
+  <div style="width:100%; max-width:700px; margin:0 auto;">
+    <h2 style="font-size:32px; font-weight:800; margin-bottom:36px; color:#182849;">Содержание</h2>
+    <div class="toc-item"><span class="toc-num">0</span><span class="toc-text">Договор (до оплаты)</span></div>
+    <div class="toc-item"><span class="toc-num">1</span><span class="toc-text">Оплата и фиксация в AmoCRM</span></div>
+    <div class="toc-item"><span class="toc-num">2</span><span class="toc-text">Создание чата и отправка информации</span></div>
+    <div class="toc-item"><span class="toc-num">3</span><span class="toc-text">Определение ментора</span></div>
+    <div class="toc-item"><span class="toc-num">4</span><span class="toc-text">Карта студента (Google Таблицы)</span></div>
+    <div class="toc-item"><span class="toc-num">5</span><span class="toc-text">Привязка карты студента к АКБ</span></div>
+    <div class="toc-item"><span class="toc-num">6</span><span class="toc-text">Настройка и проверка Pulse</span></div>
+    <div class="toc-item"><span class="toc-num">7</span><span class="toc-text">Tilda</span></div>
+    <div class="toc-item"><span class="toc-num">8</span><span class="toc-text">Global Generation Hub</span></div>
+    <div class="toc-item"><span class="toc-num">9</span><span class="toc-text">Роли участников группы</span></div>
+  </div>
+</div>
+
+<!-- PAGE 3: Steps 0-1 -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">0</div><div class="step-title">Договор (до оплаты)</div></div>
+      <div class="content">
+        <ul>
+          <li>Менеджер продаж копирует шаблон договора из Google Диска (папка Sales)</li>
+          <li>Заполняет данные клиента по скану паспорта и прописки</li>
+        </ul>
+        <div class="warn"><strong>Все данные — как в паспорте.</strong> Если данные латиницей — пишем латиницей</div>
+        <ul>
+          <li>Если паспорт просрочен — используем загранпаспорт</li>
+          <li>Для граждан других стран — загранпаспорт, адаптируем данные под формат</li>
+          <li>Отправляем договор клиенту на ознакомление</li>
+          <li>Клиент подписывает на каждой странице, на последней — заполняет свои данные</li>
+          <li>Клиент делает скан подписанного договора и отправляет обратно</li>
+          <li>Загружаем подписанный договор в систему (Hub)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="step-header"><div class="step-num">1</div><div class="step-title">Оплата и фиксация в AmoCRM</div></div>
+      <div class="content">
+        <ul>
+          <li>Клиент оплачивает по реквизитам и отправляет чек</li>
+          <li>В AmoCRM: открыть диалог клиента → вкладка <strong>«Счета и покупки»</strong> → <strong>«Добавить»</strong> → <strong>«Оплачен»</strong></li>
+          <li>Ввести продукт и метод оплаты (цена подтягивается автоматически) → сохранить</li>
+          <li>Перенести клиента в <strong>«Успешно реализованное»</strong> → клиент переходит в AmoCRM АКБ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: Steps 2-3 -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">2</div><div class="step-title">Создание чата и отправка информации</div></div>
+      <div class="content">
+        <ul>
+          <li>Менеджер создаёт групповой чат в Telegram</li>
+          <li>Уточнить у клиента, кого добавить с его стороны (родители, плательщик)</li>
+          <li>Добавить в чат: клиента, участников с его стороны, Льва Авдошина (2 аккаунта: основной + доп. аккаунт ментора)</li>
+          <li>Переименовать чат: <strong>«Имя клиента | GlobalGen»</strong></li>
+          <li>Поменять обложку чата: однотонный фон + эмодзи с первой буквой имени</li>
+        </ul>
+        <div class="tip">Пример: «Анастасия | GlobalGen»</div>
+        <div class="sub-title">Отправка информации</div>
+        <ul>
+          <li>Отправить в чат: общая информация, задачи на ближайшее время</li>
+          <li>Если клиент ещё не оплатил — первая задача: оплата</li>
+        </ul>
+        <div class="warn"><strong>Без оплаты карта студента не создаётся.</strong> Сначала информация в чат, затем ментор и карта</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="step-header"><div class="step-num">3</div><div class="step-title">Определение ментора</div></div>
+      <div class="content">
+        <ul>
+          <li>Менеджер вместе с Львом определяет ментора</li>
+          <li>Критерии: специальность, предпочтения клиента, доступность</li>
+          <li>После определения — добавить ментора в чат Telegram и переименовать чат при необходимости</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: Step 4 -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">4</div><div class="step-title">Карта студента (Google Таблицы)</div></div>
+      <div class="content">
+        <div class="sub-title" style="border:none;padding:0;margin:0 0 8px 0;">Создание карты</div>
+        <ol>
+          <li>Открыть таблицу <strong>«АКБ + Dashboard Global Generation»</strong></li>
+          <li>Перейти во вкладку <strong>«Plan»</strong> (последняя вкладка)</li>
+          <li>Вписать имя клиента, выбрать тариф, выбрать ментора</li>
+          <li>Скопировать шаблон <strong>«Бланк»</strong> → Make a Copy → назвать <strong>«Имя клиента + Ментор | GlobalGen»</strong></li>
+        </ol>
+        <div class="tip">Пример: «Алёна + Алиса | GlobalGen»</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="content">
+        <ol start="5">
+          <li>В копии открыть вкладку <strong>«Дата»</strong> (последняя) → пролистать до строки 82 (модули: 6 + 2 addon)</li>
+          <li>В таблице АКБ + Dashboard, вкладка «Plan»: выделить ячейки <strong>AM2–AT2</strong> (границы имён менторов), протянуть вниз до конца таблицы (строчка 122)</li>
+          <li><strong>Ctrl+C</strong> → вставить в ячейку <strong>A82</strong> карты студента → <strong>Специальная вставка → Только значения</strong></li>
+          <li>Разрешить доступ к внешним данным (Allow Access)</li>
+          <li>Проверить дашборд — ментор должен отображаться</li>
+        </ol>
+
+        <div class="sub-title">Homework</div>
+        <ul>
+          <li>В карте студента перейти во вкладку <strong>Homework</strong></li>
+          <li>В ячейке <strong>«Дата занятия»</strong> написать формулу <strong>=TODAY()</strong></li>
+          <li><strong>Ctrl+C</strong> → вставка только значений</li>
+          <li>Если дата первого занятия определена — поменять на нужную. Если нет — оставить как есть и проставить позже</li>
+        </ul>
+
+        <div class="sub-title">Отправка карты в чат</div>
+        <ul>
+          <li>Отправить в чат клиента ссылку на карту студента</li>
+        </ul>
+        <div class="warn"><strong>Закрепить карту студента в чате</strong> — обязательный шаг</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: Steps 5-6 -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">5</div><div class="step-title">Привязка карты студента к АКБ</div></div>
+      <div class="content">
+        <ol>
+          <li>Открыть таблицу <strong>АКБ</strong> → вкладка <strong>«Дата»</strong></li>
+          <li>Найти первую пустую строку после последнего клиента</li>
+          <li>Пролистать вверх по столбцу <strong>A</strong>, пока не появится имя последнего клиента — так проще ориентироваться</li>
+          <li>Напротив имени этого клиента в столбце <strong>B</strong> скопировать формулу <strong>IMPORT RANGE</strong></li>
+          <li>Вернуться в первую пустую строку после последнего клиента</li>
+          <li>Вставить формулу в столбец <strong>B</strong>, но внутри заменить ссылку на карту старого студента на ссылку нового (предварительно дать доступ «Редактор» всем)</li>
+          <li>В столбце <strong>A</strong> написать имя нового клиента</li>
+          <li>Дождаться загрузки, проверить дашборд — клиент в <strong>«В работе»</strong></li>
+          <li>Пролистать вправо до зелёной таблички <strong>«Последние миты»</strong></li>
+          <li>Скопировать последнюю запись, вставить: имя, дата оплаты, ссылка на карту</li>
+          <li>Проверить: в «В работе» — занятия, дата оплаты, ментор</li>
+          <li>Убрать временные данные из вкладки «Plan»</li>
+        </ol>
+      </div>
+    </div>
+    <div class="col">
+      <div class="step-header"><div class="step-num">6</div><div class="step-title">Настройка и проверка Pulse</div></div>
+      <div class="content">
+        <div class="sub-title" style="border:none;padding:0;margin:0 0 8px 0;">Настройка бота</div>
+        <ol>
+          <li>Открыть бот <strong>«Pulse By Global Generation»</strong></li>
+          <li><strong>«Добавить группу или канал»</strong> → выбрать новый чат</li>
+          <li><strong>/start</strong> → выбрать: клиент → менторы → отдел заботы</li>
+          <li>Часовой пояс: <strong>Нью-Йорк</strong></li>
+          <li>Регламент ответа: <strong>1440 минут</strong></li>
+          <li>Доп. информация: <strong>---</strong></li>
+          <li>Сохранить в таблицу</li>
+        </ol>
+        <div class="warn"><strong>После добавления Pulse написать что-нибудь в чат,</strong> чтобы бот начал отслеживать</div>
+
+        <div class="sub-title">Таблица SLA</div>
+        <ul>
+          <li>Вставить название чата из Telegram (как есть)</li>
+          <li>Столбец <strong>I</strong>: статус = <strong>«Активный»</strong></li>
+          <li>Столбец <strong>J</strong>: тариф = выбрать нужный</li>
+        </ul>
+        <div class="tip">Пример тарифа: «Частичное»</div>
+
+        <div class="sub-title">Проверка</div>
+        <ul>
+          <li>В таблице столбец <strong>A</strong> — новый клиент, всё зелёное</li>
+          <li><strong>Looker</strong> → <strong>«Last 14 days»</strong> → чат и сообщение видны</li>
+          <li>Вкладка менторства: ментор, сообщение, чат отображаются</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: Steps 7-8 -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">7</div><div class="step-title">Tilda</div></div>
+      <div class="content">
+        <ol>
+          <li>Открыть <strong>Tilda</strong> → зайти в аккаунт → аккаунт Льва</li>
+          <li><strong>«Мой проект Global Generation»</strong> → ЛК</li>
+          <li><strong>«Добавить пользователя»</strong>: имя, email, телефон</li>
+          <li>Выбрать доступ: <strong>Бакалавриат</strong> или <strong>Магистратура</strong></li>
+          <li>Написать клиенту: <strong>«Доступ к порталу выдан»</strong></li>
+        </ol>
+      </div>
+
+      <hr class="divider">
+
+      <div class="step-header"><div class="step-num">8</div><div class="step-title">Global Generation Hub</div></div>
+      <div class="content">
+        <ol>
+          <li>Войти в <strong>Hub</strong> → АКБ → <strong>«Новый клиент»</strong></li>
+          <li>Заполнить: имя, возраст, страна (обычно США), год поступления (2026), ментор</li>
+          <li>Ответственный: менеджер продаж</li>
+          <li>Username: скопировать из чата с клиентом</li>
+          <li>Ссылка на рабочий чат: Telegram → Изменить чат → Пригласительные ссылки → Скопировать</li>
+        </ol>
+      </div>
+    </div>
+    <div class="col">
+      <div class="content">
+        <ol start="6">
+          <li>Статус оплаты: <strong>«Оплатил»</strong>, способ оплаты (обычно сервис быстрых переводов)</li>
+          <li>Выбрать тариф, загрузить подписанный договор (если большой — сжать)</li>
+          <li>Скачать и загрузить чек</li>
+          <li>Добавить платёж: сумма, месяц, дата платежа, чек обязательно</li>
+        </ol>
+        <div class="tip">Пример: сумма 100, месяц — март</div>
+        <div class="warn"><strong>Фиксируем оплату в день оплаты.</strong> Если клиент оплатил 25 марта — это март, не апрель</div>
+        <ol start="10">
+          <li>Создать задачу на <strong>10 дней после оплаты</strong>: «Узнать про продление»</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: Roles -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="step-header"><div class="step-num">9</div><div class="step-title">Роли участников группы</div></div>
+
+      <div class="role-card">
+        <div class="role-name">Лев Авдошин</div>
+        <ul>
+          <li>Присутствует на первой встрече (любой тариф)</li>
+          <li>После первой встречи: выходит из чата с основного аккаунта, остаётся в доп. аккаунте</li>
+          <li><strong>Премиум-менторство:</strong> участвует в 2–3 встречах, остаётся основной аккаунт</li>
+        </ul>
+      </div>
+
+      <div class="role-card">
+        <div class="role-name">Ментор</div>
+        <ul>
+          <li>Отвечает на сообщения клиента вовремя</li>
+          <li>Проводит встречи</li>
+          <li>Проверяет домашние задания</li>
+          <li><strong>Важно:</strong> ментор должен писать каждый день</li>
+          <li>Нет коммуникации больше недели → написать ментору (проверить через Pulse)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="role-card">
+        <div class="role-name">Менеджер по продажам</div>
+        <ul>
+          <li>Создаёт чат, вносит клиента во все системы</li>
+          <li>Контролирует процесс работы</li>
+          <li>Занимается продлением тарифов</li>
+          <li>Заполняет и обновляет Global Generation Hub</li>
+        </ul>
+        <div class="role-sub">
+          <div class="role-sub-title">График напоминаний о продлении:</div>
+          <ul>
+            <li>День оплаты</li>
+            <li>10 дней после оплаты</li>
+            <li>10 дней перед следующей оплатой</li>
+            <li>День следующей оплаты</li>
+            <li>При игноре — скрипты (Miro)</li>
+            <li>Игнор больше недели → пишем ментору / в общий чат</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="summary-block" style="margin-top: 20px;">
+        <h3>Что указать по каждому клиенту</h3>
+        <ul>
+          <li>На какой период пришёл клиент (тариф, срок)</li>
+          <li>Месяцы работы (обновлять ежемесячно в карточке)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: Checklist -->
+<div class="page">
+  <div class="two-col">
+    <div class="col">
+      <div class="summary-block">
+        <h3>Итоговый чек-лист</h3>
+        <ul>
+          <li>Договор подписан и загружен в Hub</li>
+          <li>Оплата зафиксирована в AmoCRM</li>
+          <li>Чат в Telegram создан, информация отправлена</li>
+          <li>Ментор определён и добавлен в чат</li>
+          <li>Карта студента создана, Homework настроен, карта закреплена в чате</li>
+          <li>Карта привязана к АКБ, клиент в «В работе»</li>
+          <li>Pulse настроен, таблица SLA заполнена, проверка пройдена</li>
+          <li>Клиент в Tilda добавлен и доступ к порталу выдан</li>
+          <li>Hub полностью заполнен (данные, договор, чек, платёж, задача)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
